@@ -5,6 +5,10 @@ from models import ATM
 from utils import authenticate, database
 
 
+def helper(capability, activity):
+    return capability == "SUPPORTED" and activity == "AVAILABLE"
+
+
 class ATMsResource(Resource):
 
     @authenticate()
@@ -24,22 +28,40 @@ class ATMsResource(Resource):
                 latitude=atm_data['latitude'],
                 longitude=atm_data['longitude'],
                 all_day=atm_data.get('all_day', False),
-                wheelchair_service_capability=atm_data['services']['wheelchair']['serviceCapability'],
-                wheelchair_service_activity=atm_data['services']['wheelchair']['serviceActivity'],
-                blind_service_capability=atm_data['services']['blind']['serviceCapability'],
-                blind_service_activity=atm_data['services']['blind']['serviceActivity'],
-                nfc_for_bank_cards_service_capability=atm_data['services']['nfcForBankCards']['serviceCapability'],
-                nfc_for_bank_cards_service_activity=atm_data['services']['nfcForBankCards']['serviceActivity'],
-                qr_read_service_capability=atm_data['services']['qrRead']['serviceCapability'],
-                qr_read_service_activity=atm_data['services']['qrRead']['serviceActivity'],
-                supports_usd_service_capability=atm_data['services']['supportsUsd']['serviceCapability'],
-                supports_usd_service_activity=atm_data['services']['supportsUsd']['serviceActivity'],
-                supports_charge_rub_service_capability=atm_data['services']['supportsChargeRub']['serviceCapability'],
-                supports_charge_rub_service_activity=atm_data['services']['supportsChargeRub']['serviceActivity'],
-                supports_eur_service_capability=atm_data['services']['supportsEur']['serviceCapability'],
-                supports_eur_service_activity=atm_data['services']['supportsEur']['serviceActivity'],
-                supports_rub_service_capability=atm_data['services']['supportsRub']['serviceCapability'],
-                supports_rub_service_activity=atm_data['services']['supportsRub']['serviceActivity']
+
+                wheelchair_service=helper(
+                    capability=atm_data['services']['wheelchair']['serviceCapability'],
+                    activity=atm_data['services']['wheelchair']['serviceActivity']
+                ),
+                blind_service=helper(
+                    capability=atm_data['services']['blind']['serviceCapability'],
+                    activity=atm_data['services']['blind']['serviceActivity']
+                ),
+                nfc_for_bank_cards_service=helper(
+                    capability=atm_data['services']['nfcForBankCards']['serviceCapability'],
+                    activity=atm_data['services']['nfcForBankCards']['serviceActivity']
+                ),
+                qr_read_service=helper(
+                    capability=atm_data['services']['qrRead']['serviceCapability'],
+                    activity=atm_data['services']['qrRead']['serviceActivity']
+                ),
+                supports_usd_service=helper(
+                    capability=atm_data['services']['supportsUsd']['serviceCapability'],
+                    activity=atm_data['services']['supportsUsd']['serviceActivity']
+                ),
+                supports_charge_rub_service=helper(
+                    capability=atm_data['services']['supportsChargeRub']['serviceCapability'],
+                    activity=atm_data['services']['supportsChargeRub']['serviceActivity']
+                ),
+                supports_eur_service=helper(
+                    capability=atm_data['services']['supportsEur']['serviceCapability'],
+                    activity=atm_data['services']['supportsEur']['serviceActivity']
+                ),
+                supports_rub_service=helper(
+                    capability=atm_data['services']['supportsRub']['serviceCapability'],
+                    activity=atm_data['services']['supportsRub']['serviceActivity']
+                ),
+
             )
             database.session.add(new_atm)
         database.session.commit()
