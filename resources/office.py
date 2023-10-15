@@ -49,6 +49,7 @@ def get_loads(loads_dict, key):
         return loads.split(', ')
     return None
 
+
 class OfficesResource(Resource):
 
     @authenticate()
@@ -56,7 +57,7 @@ class OfficesResource(Resource):
         offices = Office.query.all()
         open_hours = OpenHour.query.all()
         weekday = datetime.today().weekday()
-        daily_loads = DailyLoad.query.filter_by(day_of_week=str(weekday)).all()
+        daily_loads = DailyLoad.query.filter_by(day_of_week=str(weekday-2)).all()  # todo
 
         loads_dict = {}
         for load in daily_loads:
